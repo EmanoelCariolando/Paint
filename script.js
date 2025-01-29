@@ -3,7 +3,10 @@
     let screen = document.getElementById('tela');
     let currentCollor = 'black'
     let ctx = screen.getContext('2d');
+
     let canDraw = false;
+    let mouseX = 0;
+    let mouseY = 0;
 
 
 //Event Listeners
@@ -29,22 +32,44 @@
           
           
           
-      function startPainting(){
+      function startPainting(e){
        canDraw = true;
- 
-
+        mouseX = (e.pageX - screen.offsetLeft);
+        mouseY = (e.pageY - screen.offsetTop);
+        
       }
-      function painting() {
+
+      function painting(e) {
         if(canDraw){
-          console.log(`desenhando`);
+          drawn(e.pageX, e.pageY);
         }
 
 
       }
       function stopPainting(){
         if(canDraw){
-          console.log(`parou de desenhar`);
+          canDraw = false;
+          console.log('parou de desenhar');
         }
       }
 
 
+      function drawn(x, y){
+        let pointX = x - screen.offsetLeft;
+        let pointY = y - screen.offsetTop;
+
+        ctx.beginPath();
+       
+        ctx.lineWidth = 7;
+        ctx.lineJoin = 'round';
+        ctx.moveTo(mouseX, mouseY);
+        ctx.lineTo(pointX, pointY);
+        ctx.closePath();
+        ctx.strokeStyle = currentCollor;
+        ctx.stroke();
+
+        mouseX = pointX;
+        mouseY = pointY;
+
+      
+      }
